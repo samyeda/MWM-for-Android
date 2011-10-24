@@ -13,9 +13,8 @@ public class GoogleWeatherHandler extends DefaultHandler {
 	// ===========================================================
 	// Fields
 	// ===========================================================
-	
-	@SuppressWarnings("unused")
-	private String city = "";
+
+	public String city = "";
 
 	private WeatherSet myWeatherSet = null;
 	@SuppressWarnings("unused")
@@ -66,7 +65,6 @@ public class GoogleWeatherHandler extends DefaultHandler {
 			// 'Inner' Tags of "<forecast_information>"
 			if (localName.equals("city")) {
 				this.city = dataAttribute;
-				//Log.d("ow", "city detected");
 			} else if (localName.equals("postal_code")) {
 			} else if (localName.equals("latitude_e6")) {
 				/* One could use this to convert city-name to Lat/Long. */
@@ -75,8 +73,9 @@ public class GoogleWeatherHandler extends DefaultHandler {
 			} else if (localName.equals("forecast_date")) {
 			} else if (localName.equals("current_date_time")) {
 			} else if (localName.equals("unit_system")) {
-				if (dataAttribute.equals("SI"))
+				if (dataAttribute.equals("SI")) {
 					this.usingSITemperature = true;
+				}
 			}
 			// SHARED(!) 'Inner' Tags within "<current_conditions>" AND
 			// "<forecast_conditions>"
@@ -92,21 +91,21 @@ public class GoogleWeatherHandler extends DefaultHandler {
 							dataAttribute);
 				} else if (this.in_forecast_conditions) {
 					this.myWeatherSet.getLastWeatherForecastCondition()
-							.setIconURL(dataAttribute);
+					.setIconURL(dataAttribute);
 				}
 			} else if (localName.equals("condition")) {
 				if (this.in_current_conditions) {
 					this.myWeatherSet.getWeatherCurrentCondition()
-							.setCondition(dataAttribute);
+					.setCondition(dataAttribute);
 				} else if (this.in_forecast_conditions) {
 					this.myWeatherSet.getLastWeatherForecastCondition()
-							.setCondition(dataAttribute);
+					.setCondition(dataAttribute);
 				}
 			}
 			// 'Inner' Tags within "<current_conditions>"
 			else if (localName.equals("temp_f")) {
 				this.myWeatherSet.getWeatherCurrentCondition()
-						.setTempFahrenheit(Integer.parseInt(dataAttribute));
+				.setTempFahrenheit(Integer.parseInt(dataAttribute));
 			} else if (localName.equals("temp_c")) {
 				this.myWeatherSet.getWeatherCurrentCondition().setTempCelcius(
 						Integer.parseInt(dataAttribute));
@@ -115,28 +114,28 @@ public class GoogleWeatherHandler extends DefaultHandler {
 						dataAttribute);
 			} else if (localName.equals("wind_condition")) {
 				this.myWeatherSet.getWeatherCurrentCondition()
-						.setWindCondition(dataAttribute);
+				.setWindCondition(dataAttribute);
 			}
 			// 'Inner' Tags within "<forecast_conditions>"
 			else if (localName.equals("low")) {
 				int temp = Integer.parseInt(dataAttribute);
 				if (this.usingSITemperature) {
 					this.myWeatherSet.getLastWeatherForecastCondition()
-							.setTempMinCelsius(temp);
+					.setTempMinCelsius(temp);
 				} else {
 					this.myWeatherSet.getLastWeatherForecastCondition()
-							.setTempMinCelsius(
-									WeatherUtils.fahrenheitToCelsius(temp));
+					.setTempMinCelsius(
+							WeatherUtils.fahrenheitToCelsius(temp));
 				}
 			} else if (localName.equals("high")) {
 				int temp = Integer.parseInt(dataAttribute);
 				if (this.usingSITemperature) {
 					this.myWeatherSet.getLastWeatherForecastCondition()
-							.setTempMaxCelsius(temp);
+					.setTempMaxCelsius(temp);
 				} else {
 					this.myWeatherSet.getLastWeatherForecastCondition()
-							.setTempMaxCelsius(
-									WeatherUtils.fahrenheitToCelsius(temp));
+					.setTempMaxCelsius(
+							WeatherUtils.fahrenheitToCelsius(temp));
 				}
 			}
 		}

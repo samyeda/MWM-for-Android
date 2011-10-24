@@ -2,9 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="org.metawatch.manager"
       android:versionCode="1"
-      android:installLocation="internalOnly" android:versionName="0.2.4">
-    <uses-sdk android:minSdkVersion="7" />
-    <supports-screens android:resizeable="true" android:normalScreens="true" android:anyDensity="true" android:xlargeScreens="true" android:largeScreens="true" android:smallScreens="true"></supports-screens>
+      android:installLocation="internalOnly" android:versionName="1.10.20">
+    <uses-sdk android:minSdkVersion="8" />
     
     <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
 	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
@@ -27,7 +26,7 @@
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.READ_SMS" />
 
-    <application android:icon="@drawable/icon" android:label="@string/app_name" android:hardwareAccelerated="true" android:debuggable="false">
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true">
         <activity android:name=".MetaWatch"
                   android:configChanges="keyboardHidden|orientation"
                   android:launchMode="singleTask">
@@ -63,6 +62,7 @@
             	<action android:name="com.htc.android.worldclock.ALARM_ALERT" />
             	<action android:name="com.android.deskclock.ALARM_ALERT" />
             	<action android:name="com.sonyericsson.alarm.ALARM_ALERT" />
+            	<action android:name="android.intent.action.PHONE_STATE"></action>
             	
             </intent-filter>
             <intent-filter>

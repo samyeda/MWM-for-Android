@@ -1,34 +1,34 @@
-                                                                     
-                                                                     
-                                                                     
-                                             
- /*****************************************************************************
-  *  Copyright (c) 2011 Meta Watch Ltd.                                       *
-  *  www.MetaWatch.org                                                        *
-  *                                                                           *
-  =============================================================================
-  *                                                                           *
-  *  Licensed under the Apache License, Version 2.0 (the "License");          *
-  *  you may not use this file except in compliance with the License.         *
-  *  You may obtain a copy of the License at                                  *
-  *                                                                           *
-  *    http://www.apache.org/licenses/LICENSE-2.0                             *
-  *                                                                           *
-  *  Unless required by applicable law or agreed to in writing, software      *
-  *  distributed under the License is distributed on an "AS IS" BASIS,        *
-  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. *
-  *  See the License for the specific language governing permissions and      *
-  *  limitations under the License.                                           *
-  *                                                                           *
-  *****************************************************************************/
 
- /*****************************************************************************
-  * Utils.java                                                                *
-  * Utils                                                                     *
-  * Different utils                                                           *
-  *                                                                           *
-  *                                                                           *
-  *****************************************************************************/
+
+
+
+/*****************************************************************************
+ *  Copyright (c) 2011 Meta Watch Ltd.                                       *
+ *  www.MetaWatch.org                                                        *
+ *                                                                           *
+  =============================================================================
+ *                                                                           *
+ *  Licensed under the Apache License, Version 2.0 (the "License");          *
+ *  you may not use this file except in compliance with the License.         *
+ *  You may obtain a copy of the License at                                  *
+ *                                                                           *
+ *    http://www.apache.org/licenses/LICENSE-2.0                             *
+ *                                                                           *
+ *  Unless required by applicable law or agreed to in writing, software      *
+ *  distributed under the License is distributed on an "AS IS" BASIS,        *
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. *
+ *  See the License for the specific language governing permissions and      *
+ *  limitations under the License.                                           *
+ *                                                                           *
+ *****************************************************************************/
+
+/*****************************************************************************
+ * Utils.java                                                                *
+ * Utils                                                                     *
+ * Different utils                                                           *
+ *                                                                           *
+ *                                                                           *
+ *****************************************************************************/
 
 package org.metawatch.manager;
 
@@ -52,14 +52,14 @@ import android.util.Log;
 public class Utils {
 
 	public static String getContactNameFromNumber(Context context, String number) {
-		
+
 		if (number.equals(""))
 			return "Private number";
 
 		String[] projection = new String[] { PhoneLookup.DISPLAY_NAME, PhoneLookup.NUMBER };
 		Uri contactUri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
 		Cursor c = context.getContentResolver().query(contactUri, projection, null, null, null);
-		
+
 		if (c.moveToFirst()) {
 			String name = c.getString(c.getColumnIndex(PhoneLookup.DISPLAY_NAME));
 
@@ -68,22 +68,22 @@ public class Utils {
 			else
 				return number;
 		}
-		
-		return number;		 
+
+		return number;
 	}
-	
+
 	public static int getUnreadSmsCount(Context context) {
 
 		int count = 0;
 
 		Cursor cursor = context.getContentResolver().query(
-				Uri.withAppendedPath(Uri.parse("content://sms"), "inbox"), 
-				new String[] { "_id" }, 
-				"read=0", 
-				null, 
+				Uri.withAppendedPath(Uri.parse("content://sms"), "inbox"),
+				new String[] { "_id" },
+				"read=0",
+				null,
 				null
-			);
-		
+				);
+
 		if (cursor != null) {
 			try {
 				count = cursor.getCount();
@@ -93,7 +93,7 @@ public class Utils {
 		}
 		return count;
 	}
-	
+
 	public static int getMissedCallsCount(Context context) {
 		int missed = 0;
 		try {
@@ -101,11 +101,13 @@ public class Utils {
 			cursor.moveToFirst();
 
 			while (true) {
-				if (cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE)) == 3)
+				if (cursor.getInt(cursor.getColumnIndex(CallLog.Calls.TYPE)) == 3) {
 					missed += cursor.getInt(cursor.getColumnIndex(CallLog.Calls.NEW));
+				}
 
-				if (cursor.isLast())
+				if (cursor.isLast()) {
 					break;
+				}
 
 				cursor.moveToNext();
 			}
@@ -114,7 +116,7 @@ public class Utils {
 		}
 		return missed;
 	}
-	
+
 	public static int getUnreadGmailCount(Context context, String account, String label) {
 		try {
 			int nameColumn = 0;
@@ -129,12 +131,12 @@ public class Utils {
 				}
 
 			while (true) {
-				if (c.getString(nameColumn).equals(label))
+				if (c.getString(nameColumn).equals(label)) {
 					for (int i = 0; i < c.getColumnCount(); i++) {
-						if (c.getColumnName(i).equals("numUnreadConversations")) {
+						if (c.getColumnName(i).equals("numUnreadConversations"))
 							return Integer.parseInt(c.getString(i));
-						}
 					}
+				}
 
 				c.moveToNext();
 
@@ -143,12 +145,12 @@ public class Utils {
 				}
 			}
 		} catch (Exception x) {
-			Log.d(MetaWatch.TAG, x.toString());
+			Log.e(MetaWatch.TAG, x.toString());
 		}
 
 		return 0;
 	}
-	
+
 	public static String getGoogleAccountName(Context context) {
 		AccountManager accountManager = AccountManager.get(context);
 		Account[] accounts = accountManager.getAccounts();
@@ -157,22 +159,20 @@ public class Utils {
 
 		for (int i = 0; i < count; i++) {
 			account = accounts[i];
-			if (account.type.equals("com.google")) {
+			if (account.type.equals("com.google"))
 				return account.name;
-			}
 		}
 		return "";
 	}
-	
+
 	public static Bitmap loadBitmapFromAssets(Context context, String path) {
 		try {
 			InputStream inputStream = context.getAssets().open(path);
-	        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-	        inputStream.close();
-	        //Log.d(MetaWatch.TAG, "ok");
-	        return bitmap;
+			Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+			inputStream.close();
+			return bitmap;
 		} catch (IOException e) {
-			//Log.d(MetaWatch.TAG, e.toString());
+			Log.e(MetaWatch.TAG, e.toString());
 			return null;
 		}
 	}
@@ -180,9 +180,9 @@ public class Utils {
 	public static Bitmap loadBitmapFromPath(Context context, String path) {
 			return BitmapFactory.decodeFile(path);
 	}
-	*/
-	
-	public static String getVersion(Context context) {		
+	 */
+
+	public static String getVersion(Context context) {
 		try {
 			PackageManager packageManager = context.getPackageManager();
 			PackageInfo packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
@@ -191,23 +191,23 @@ public class Utils {
 		}
 		return "unknown";
 	}
-	
+
 	public static boolean isGmailAccessSupported(Context context) {
-		
-		
+
+
 		try {
 			PackageManager packageManager = context.getPackageManager();
 			PackageInfo packageInfo = packageManager.getPackageInfo("com.google.android.gm", 0);
 			// check for Gmail version earlier than v2.3.5 (169)
 			if (packageInfo.versionCode < 169)
-					return true;			
-			
+				return true;
+
 		} catch (NameNotFoundException e) {
 		}
-		
-		
+
+
 		return false;
 	}
-	
+
 
 }
